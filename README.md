@@ -222,6 +222,7 @@ $this->db->or_where_not_in('usuarios', $nomes);
 
 Este método permite gerar cláusulas LIKE, úteis para fazer buscas.
 >Todos os valores passados ​​para este método são escapados automaticamente.
+
 ```
 $this->db->like('titulo', 'saida');
 // WHERE titulo LIKE %saida% ESCAPE '!'
@@ -301,4 +302,58 @@ Idêntico ao having(), apenas separa várias cláusulas com "OR":
 ```
 $this->db->having( 'usuario_id = 45' );
 // OR HAVING usuario_id = 45 
+```
+
+
+---
+###$this->db->order_by()
+
+Permite definir uma cláusula ORDER BY.
+O primeiro parâmetro contém o nome da coluna que você gostaria de ordenar.
+O segundo parâmetro permite definir a direção do resultado. 
+As opções são **ASC** , **DESC** E **RANDOM** .
+```
+$this->db->order_by ( 'titulo' , 'DESC' );
+// ORDER BY titulo DESC
+```
+Ou várias chamadas de função pode ser feito se você precisar de vários campos.
+```
+$this->db->order_by( 'titulo' , 'DESC' );
+$this->db->order_by( 'nome' ,  'ASC' ); 
+// ORDER BY titulo DESC, nome ASC
+```
+Se você escolher o RANDOM opção de direção, então os primeiros parâmetros serão ignorados, a menos que você especificar um valor de semente numérico:
+```
+$this->db->order_by('titulo' , 'RANDOM' );
+// ORDER BY RAND()
+$this->db->order_by( 42 , 'RANDOM' );
+// ORDER BY RAND(42)
+```
+
+
+---
+###$this->db->limit()
+
+Permite limitar o número de linhas que você gostaria devolvidos pela consulta :
+```
+$this->db->limit( 10 );
+// LIMIT 10
+```
+O segundo parâmetro permite definir um deslocamento resultado.
+```
+$this->db->limit( 10, 20 );
+// LIMIT 20, 10
+```
+
+
+---
+###$this->db->count_all_results()
+
+Permite que você para determinar o número de linhas em um Active Record em particular consulta . Consultas aceitará Consulta  Construtor restritores tais como where () , or_where() , like() , or_like() , etc. Exemplo:
+```
+echo $this->db->count_all_results( 'minhaTabela' );
+// 22
+$this->db->like( 'title' , 'match' );
+$this->db->from( 'my_table' ); 
+echo $this->db->count_all_results ();
 ```
