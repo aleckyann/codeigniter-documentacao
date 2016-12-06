@@ -353,7 +353,73 @@ Permite que você para determinar o número de linhas em um Active Record em par
 ```
 echo $this->db->count_all_results( 'minhaTabela' );
 // 22
-$this->db->like( 'title' , 'match' );
-$this->db->from( 'my_table' ); 
+$this->db->like( 'titulo' , 'match' );
+$this->db->from( 'minhaTabela' ); 
 echo $this->db->count_all_results ();
+// 17
 ```
+
+
+---
+###$this->db->count_all()
+
+Permite-lhe determinar o número de linhas em uma tabela particular. Apresentar o nome da tabela no primeiro parâmetro. Exemplo:
+```
+echo $this->db->count_all( 'minhaTabela' );
+// 22
+```
+
+
+---
+###ESTILO DE AGRUPAMENTO
+Consulta de agrupamento permite que você crie grupos de cláusulas WHERE quando colocadas entre parênteses. Isso permitirá que você para criar consultas com complexo de cláusulas WHERE. Grupos aninhados são suportados. Exemplo:
+```
+$this->db->select('*')->from('minhaTabela')
+	->group_start()
+		->where('a', 'a')
+		->or_group_start()
+			->where('b', 'b')
+			->where('c', 'c')
+		->group_end()
+	->group_end()
+	->where('d', 'd')
+->get();
+
+# SELECT * FROM (minhaTabela) WHERE ( a = 'a' OR ( b = 'b' AND c = 'c' ) ) AND d = 'd'
+
+```
+> grupos precisam ser equilibrados, certifique-se todos os group_start () é acompanhado por um group_end ().
+
+
+---
+###this->db->group_start()
+
+Inicia um novo grupo, adicionando um parêntese de abertura à cláusula WHERE da consulta .
+
+
+---
+###$this->db->or_group_start()
+
+Inicia um novo grupo, adicionando um parêntese de abertura à cláusula WHERE da consulta , prefixando-lo com 'OR'.
+
+
+---
+###$this->db->not_group_start()
+
+Inicia um novo grupo, adicionando um parêntese de abertura à cláusula WHERE da consulta , prefixando-lo com 'NÃO'.
+
+
+---
+###$this->db->or_not_group_start()
+
+Inicia um novo grupo, adicionando um parêntese de abertura à cláusula WHERE da consulta , antepondo-a com "ou não".
+
+
+---
+###$this->db->group_end()
+
+Termina o grupo atual, adicionando um parêntese de fechamento à cláusula WHERE da consulta .
+
+
+---
+
