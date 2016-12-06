@@ -189,10 +189,116 @@ $this->db->or_where('idade >', $idade);
 ---
 ###$this->db->where_in()
 
-
 Gera um campo WHERE IN ( 'item', 'item') consulta SQL juntou-se com e, se necessário:
 ```
 $nomes = array('Aleck Yann', 'Jonas', 'José');
 $this->db->where_in('usuarios', $momes);
 // WHERE username IN ('Frank', 'Todd', 'James')
+```
+
+
+---
+###$this->db->where_not_in()
+
+Gera um campo WHERE IN ( 'item', 'item') SQL consulta unidos com ou se for o caso:
+```
+$nomes = array('Aleck Yann', 'Jonas', 'José');
+$this->db->where_not_in('usuarios', $nomes);
+// OR usuarios IN ('Aleck Yann', 'Jonas', 'José')
+```
+
+---
+###$this->db->or_where_not_in()
+
+Gera um campo WHERE NOT IN ( 'item', 'item') SQL consulta unidos com ou se for o caso:
+```
+$nomes = array('Aleck Yann', 'Jonas', 'José');
+$this->db->or_where_not_in('usuarios', $nomes);
+// OR usuarios NOT IN ('Aleck Yann', 'Jonas', 'José')
+```
+
+---
+###$this->db->like()
+
+Este método permite gerar cláusulas LIKE, úteis para fazer buscas.
+>Todos os valores passados ​​para este método são escapados automaticamente.
+```
+$this->db->like('titulo', 'saida');
+// WHERE titulo LIKE %saida% ESCAPE '!'
+```
+Se você usar vários chamadas de método que vai ser encadeados com AND entre eles:
+```
+$this->db->like('titulo', 'saida');
+$this->db->like('texto', 'saida');
+//WHERE titulo LIKE %saida% ESCAPE '!' AND texto LIKE %saida% ESCAPE '!'
+```
+
+---
+###$this->db->or_like()
+
+Este método é idêntico ao descrito acima, excepto que as várias instâncias são unidas por OR:
+```
+$this->db->or_like ('corpo', $match );
+//OR corpo LIKE %match% ESCAPE '!'
+```
+
+
+---
+###$this->db->not_like()
+
+Este método é idêntico ao not_like () , exceto que as várias instâncias são unidas por OR:
+```
+$this->db->not_like( 'titulo' , 'match' );
+// WHERE titulo NOT LIKE '%match% ESCAPE '!'
+```
+
+
+---
+###$this->db->or_not_like()
+
+Este método é idêntico ao not_like () , exceto que as várias instâncias são unidas por OR:
+```
+$this->db->or_not_like( 'texto' , 'match' );
+// OR texto NOT LIKE '%match%' ESCAPE '!'
+```
+
+
+---
+###$this->db->group_by()
+
+Permite-lhe para escrever o GROUP BY parte da sua consulta :
+```
+$this->db->group_by( "titulo" );
+// GROUP BY titulo
+```
+
+
+---
+###$this->db->distinct()
+
+Adiciona a palavra-chave "DISTINCT" a um consulta:
+```
+$this->db->distinct();
+$this->db->get( 'minhaTabela' );
+// SELECT DISTINCT * FROM minhaTabela
+```
+
+
+---
+###$this->db->having()
+
+Permite-lhe para escrever a parte que tem de sua consulta . Há 2 possíveis sintaxes, um argumento ou 2:
+```
+$this->db->having( 'usuario_id = 45' );
+// HAVING usuario_id = 45 
+```
+
+
+---
+###$this->db->or_having()
+
+Idêntico ao having(), apenas separa várias cláusulas com "OR":
+```
+$this->db->having( 'usuario_id = 45' );
+// OR HAVING usuario_id = 45 
 ```
