@@ -422,4 +422,146 @@ Termina o grupo atual, adicionando um parêntese de fechamento à cláusula WHER
 
 
 ---
+####this->db->insert()
 
+Gera uma seqüência de inserção com base nos dados que você fornecer, e executa o consulta . Você pode passar uma matriz ou um objeto para a função. Aqui está um exemplo usando uma matriz:
+```
+$dados = array ( 'titulo' => 'Um titulo' , 'nome' => 'Meu nome' , 'dados' => 'Meus dados' );
+$this->db->insert('minhaTabela', $dados);
+// INSERT INTO minhaTabela (titulo, nome, dados) VALUES ('Um titulo', 'Meu nome', 'Meus dados')
+```
+
+>Todos os valores são escapados automaticamente, produzindo querys mais seguras.
+
+
+---
+###$this->db->get_compiled_insert()
+
+Compila a inserção consulta apenas como $ this-> db-> insert (), mas não executar a consulta. Este método simplesmente retorna a consulta SQL como uma string.
+```
+$dados = array ( 'titulo' => 'Um titulo' , 'nome' => 'Meu nome' , 'dados' => 'Meus dados' );
+$sql = $this->db->set($data)->get_compiled_insert( 'minhaTabela' );
+echo $sql;
+// INSERT INTO mytable (titulo, nome, dados) VALUES ('Um titulo', 'Meu nome', 'Meus dados');
+```
+
+
+---
+###$this->db->insert_batch()
+
+Gera uma seqüência de inserção com base nos dados que você fornecer, e executa o consulta . Você pode passar uma matriz ou um objeto para a função. Aqui está um exemplo usando uma matriz:
+```
+$dados  =  array ( 
+        array ( 
+                'title'  =>  'O meu título' , 
+                'name'  =>  'My Name' , 
+                'date'  =>  'Minha data' 
+        ), 
+        array ( 
+                'title'  =>  'Outro título' , 
+                'name'  =>  'Outro nome' , 
+                'date'  =>  'Outra data' 
+        )
+);
+$this->db->insert_batch('minhaTabela', $dados);
+// INSERT INTO (titulo, nome, data) VALUES minha_tabela ( 'O meu título "," Meu nome', 'Minha data'), ( 'Outro título', 'Outro nome', 'Outra data')
+```
+O primeiro parâmetro conterá o nome da tabela, o segundo é uma matriz associativa de valores.
+
+>Todos os valores são escapados automaticamente, produzindo querys mais seguras.
+
+
+---
+###$this->db->replace()
+
+Esse método executa uma instrução REPLACE, que é basicamente o padrão SQL para (opcional) APAGAR + INSERT, usando PRIMÁRIAS e UNIQUE chaves como o fator determinante. No nosso caso, ela vai lhe poupar da necessidade de implementar lógicas complexas, com diferentes combinações de 'select ()' , 'update ()' , 'delete ()' e 'insert()' chama.
+
+```
+$dados  =  array( 
+        'title'  =>  'O meu título' , 
+        'name'   =>  'My Name' , 
+        'date'   =>  'Minha data' 
+); 
+$ this->db->replace('minhaTabela',  $dados;
+// REPLACE INTO minhaTabela (title, name, date) VALUES ('My title', 'My name', 'My date')
+```
+No exemplo acima, se assumirmos que o título de campo é a nossa principal chave, em seguida, se uma linha contendo 'O meu título ", como o título de valor, essa linha será eliminado com os nossos novos dados da linha substituí-lo.
+
+O uso do `set()` método também é permitido e todos os campos são automaticamente escapou, assim como com `insert ()`.
+
+
+---
+###$this->db->set()
+
+Esta função permite que você defina valores para inserções ou atualizações.
+
+Ele pode ser usado em vez de passar uma matriz de dados diretamente para as funções de inserção ou de atualização:
+```
+$this->db->set('name',  $name );
+$this->db->insert(minhTabela);
+// INSERT INTO minhaTabela (name) VALUES ('{$name}')
+```
+
+Se você usar a função múltipla chamada eles serão montados corretamente com base em se você está fazendo uma inserção ou uma atualização.
+
+
+---
+###$this->db->update()
+
+Gera uma seqüência de atualização e executa a consulta com base nos dados que você fornecer. Você pode passar uma matriz ou um objeto para a função. Aqui está um exemplo usando uma matriz:
+```
+$dados  =  array( 
+        'title'  =>  $titulo , 
+        'name'  =>  $name , 
+        'date'  =>  $date 
+); 
+$this->db->where( 'id' ,  $ id ); 
+$this->db->update( 'minhaTabela' ,  $ dados ); 
+// UPDATE minhaTabela SET title = '{$title}', name = '{$name}', date = '{$date}' WHERE id = $id
+```
+
+>Todos os valores são escapados automaticamente, produzindo querys mais seguras.
+
+Você notará que o uso do this- função> db-> where () $, o que permite definir a cláusula WHERE. Você pode opcionalmente passar esta informação diretamente para a função de atualização como uma string:
+```
+$ this->db->update( 'minhaTabela' ,  $dados ,  "id = 4" );
+```
+
+Ou como uma matriz:
+```
+$this->db->update( 'minhaTabela' ,  $ dados ,  array( 'id'  =>  $ id ));
+```
+Você também pode usar a função `$this->db->set()` descrito acima ao realizar atualizações.
+
+
+---
+###$this->db->update_batch()
+
+Gera uma seqüência de atualização com base nos dados que você fornecer, e executa o consulta . Você pode passar uma matriz ou um objeto para a função. Aqui está um exemplo usando uma matriz:
+```
+$dados  =  array( 
+   array ( 
+      'title'  =>  'O meu título'  , 
+      'name'  =>  'My Name 2'  , 
+      'date'  =>  'Minha data 2' 
+   ), 
+   array( 
+      'title'  =>  'Outro título '  , 
+      ' name '  =>  ' Outro nome 2 '  , 
+      ' date '  =>  ' Outra data 2 ' 
+   ) 
+); 
+$this->db->update_batch( 'mytable' ,  $dados ,  'title' );
+# UPDATE minhaTabela SET name = CASE WHEN title = 'My title' THEN 'My Name 2' WHEN title = 'Another title' THEN 'Another Name 2'  ELSE name END,  date = CASE WHEN title = 'My title' THEN 'My date 2' WHEN title = 'Another title' THEN 'Another date 2' ELSE date END WHERE title IN ('My title','Another title')
+```
+O primeiro parâmetro conterá o nome da tabela, o segundo é uma matriz associativa de valores, o terceiro parâmetro é a chave onde.
+
+>Todos os valores são escapados automaticamente, produzindo querys mais seguras.
+
+
+---
+###$this->db->get_compiled_update()
+
+Isso funciona exatamente da mesma maneira como `$this->db->get_compiled_insert()` , exceto que ele produz uma seqüência UPDATE SQL em vez de uma cadeia de SQL INSERT.
+
+Para obter mais documentação vista de informações para `$this->db->get_compiled_insert()` .
