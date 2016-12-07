@@ -1,4 +1,4 @@
-#1º Query-builder - 45% completo
+#1º Query-builder - 90% completo
 #2º Helpers - 0% completo
 
 ---
